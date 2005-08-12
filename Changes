@@ -1,0 +1,20 @@
+Revision history for Perl extension Lingua::PT::Speaker.
+
+0.05  Fri Aug 12 19:30:00 2005
+	- Dependency on Config::AutoConf. Now we check automatically
+          for a number of different places where the phonemes library
+          could be, as well for a different number of possible wav
+          players.
+	- Hopefully this module starts to be prepared for CPAN;
+	- Added dependency on Text::RewriteRules instead of using mktextrr
+	- Rearranged directory structure.
+
+0.04  ...
+	- added mktextrr to the distribution as it is required.
+
+ ...
+
+0.01  Wed Apr 18 10:49:36 2001
+	- original version; created by h2xs 1.20 with options
+		-A -X -n pt::speaker
+
