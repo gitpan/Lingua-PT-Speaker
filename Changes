@@ -1,5 +1,9 @@
 Revision history for Perl extension Lingua::PT::Speaker.
 
+0.06  Sat Aug 13 13:40:00 2005
+	- Trying to fix CPAN indexation, and add a description to the
+          module.
+
 0.05  Fri Aug 12 19:30:00 2005
 	- Dependency on Config::AutoConf. Now we check automatically
           for a number of different places where the phonemes library

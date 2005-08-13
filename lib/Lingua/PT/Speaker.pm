@@ -13,7 +13,7 @@ require Exporter;
 @ISA = qw(Exporter AutoLoader);
 @EXPORT = qw(&speak &toPhon);
 
-$VERSION = "0.05";
+$VERSION = "0.06";
 
 use locale;
 $ENV{LC_LANG}='PT_pt';
@@ -33,11 +33,11 @@ $con = '[BCDFGHJKLMNPQRSTVWXYZÇbcdfghjklmnpqrstvxzç]';
 
 =head1 NAME
 
-Lingua::PT::speaker - perl extension text to speech of Portuguese text
+Lingua::PT::Speaker - perl extension text to speech of Portuguese text
 
 =head1 SYNOPSIS
 
-  use Lingua::PT::speaker;
+  use Lingua::PT::Speaker;
 
   $pt1 = '/usr/lib/mbrola/pt1/pt1';
 
