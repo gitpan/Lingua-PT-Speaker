@@ -13,7 +13,7 @@ require Exporter;
 @ISA = qw(Exporter AutoLoader);
 @EXPORT = qw(&speak &toPhon);
 
-$VERSION = "0.06";
+$VERSION = "0.07";
 
 use locale;
 $ENV{LC_LANG}='PT_pt';

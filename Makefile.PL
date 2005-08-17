@@ -1,4 +1,4 @@
-use ExtUtils::MakeMaker;
+use inc::Module::Install;
 use Config::AutoConf;
 
 # Check for PT1 phonemes path..........................
@@ -46,20 +46,20 @@ my $quotedplayer = quotemeta($player);
 # Rewrite pt-speak command line tool....................
 
 `perl -e 'while(<>) { s/##PLAYER##/$quotedplayer/; s/##PT1##/$quotedpath/; print }' pt-speak.in > pt-speak`;
-chmod 0755, pt-speak;
+chmod 0755, 'pt-speak';
 
 # Write Makefile........................................
 
-WriteMakefile(
-	      'NAME'		=> 'Lingua::PT::Speaker',
-	      'EXE_FILES'       => [qq/pt-speak/],
-	      'VERSION_FROM'	=> 'lib/Lingua/PT/Speaker.pm', # finds $VERSION
-	      'PREREQ_PM'		=> {
-					    'Config::AutoConf'   => 0.03,
-					    'Text::RewriteRules' => 0.09,
-					    'Lingua::PT::PLN'    => 0.05,
-					   },
-	      'clean'             => { FILES => "_* *.pm" },
-	     );
+name("Lingua-PT-Speaker");
+# exe_files([qq/pt-speak/]);
+version_from('lib/Lingua/PT/Speaker.pm');
+build_requires('Config::AutoConf'   => 0.03);
+requires('Text::RewriteRules' => 0.09,
+	 'Lingua::PT::PLN'    => 0.05);
 
+bundle('Config::AutoConf' => 0.03);
+
+install_script('pt-speak');
+
+&WriteAll;
 
