@@ -13,7 +13,7 @@ require Exporter;
 @ISA = qw(Exporter AutoLoader);
 @EXPORT = qw(&speak &toPhon);
 
-$VERSION = "0.07";
+$VERSION = "0.08";
 
 use locale;
 $ENV{LC_LANG}='PT_pt';
@@ -59,7 +59,7 @@ Lingua::PT::Speaker - perl extension text to speech of Portuguese text
 
 =head1 AUTHOR
 
-J.Joao Almeira, jj@di.uminho.pt
+J.Joao Almeida, jj@di.uminho.pt
 
 Alberto Simões, albie@alfarrabio.di.uminho.pt
 

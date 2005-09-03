@@ -1,5 +1,12 @@
 Revision history for Perl extension Lingua::PT::Speaker.
 
+0.08  Sat Sep  3 14:50:00 2005
+        - Pos-YAPC::EU::2005 release.
+        - Corrected pt-speak to look to the '-t' option.
+	- Moved from Module::Install to MakeMaker again, as I can't
+          make Module::Install work correctly on my MacOS X.
+	- Detect mbrola executable and, if not found, ask for one.
+
 0.07  Tue Aug 17 15:00:00 2005
 	- Changed to Module::Install instead of MakeMaker, so I can
 	  autobundle Config::AutoConf, needed during configuration.

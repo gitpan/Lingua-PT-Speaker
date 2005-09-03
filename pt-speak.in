@@ -45,7 +45,7 @@ my $tmp="/tmp/_$$";
 
 $/="" if  $l;
 
-if(@ARGV && $ARGV[0] =~ /\.pho$/) { `mbrola -t $t $pt1 $ARGV[0] $tmp.wav`; 
+if(@ARGV && $ARGV[0] =~ /\.pho$/) { `##MBROLA## -t $t $pt1 $ARGV[0] $tmp.wav`; 
                  `play $tmp.wav`; 
                   unlink( "$tmp.wav") unless($q);
                   exit 0;
@@ -80,29 +80,29 @@ while($line = <>) {
 	 output => "$tmp.pho"}, $line);
 
   if ($wav) {
-    `mbrola -t 1 $pt1 $tmp.pho $wav`;
+    `##MBROLA## -t $t $pt1 $tmp.pho $wav`;
     unlink ( "$tmp.pho" ) unless $q;
   }
 
   elsif ($default =~ m!rawplay$!) {
-    `mbrola -t 1 $pt1 $tmp.pho -.raw|rawplay`;
+    `##MBROLA## -t $t $pt1 $tmp.pho -.raw|rawplay`;
     unlink( "$tmp.pho") unless $q;
   }
 
   elsif ($default =~ m!esdplay$!) {
-    `mbrola -t 1.5 $pt1 $tmp.pho $tmp.wav`;
+    `##MBROLA## -t $t $pt1 $tmp.pho $tmp.wav`;
     `esdplay $tmp.wav`; 
     unlink( "$tmp.pho","$tmp.wav") unless $q;
   }
 
   elsif ($default =~ m!sndplay$!) {
-    `mbrola -t 1.5 $pt1 $tmp.pho $tmp.wav`;
+    `##MBROLA## -t $t $pt1 $tmp.pho $tmp.wav`;
     `sndplay $tmp.wav`;
     unlink( "$tmp.pho","$tmp.wav") unless $q;
   }
 
   elsif ($default =~ m!play$!) {
-    `mbrola -t $t $pt1 $tmp.pho $tmp.wav`;
+    `##MBROLA## -t $t $pt1 $tmp.pho $tmp.wav`;
     `play $tmp.wav`;
     unlink( "$tmp.pho","$tmp.wav") unless $q;
   }

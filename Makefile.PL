@@ -1,5 +1,7 @@
-use inc::Module::Install;
-use Config::AutoConf;
+use strict;
+use warnings;
+use ExtUtils::MakeMaker;
+use inc::AutoConf;
 
 # Check for PT1 phonemes path..........................
 
@@ -32,7 +34,7 @@ my $quotedpath = quotemeta($PT1);
 
 # Find for player.......................................
 
-my $player = Config::AutoConf->check_progs(qw/play sndplay esdplay rawplay/);
+my $player = inc::AutoConf->check_progs(qw/play sndplay esdplay rawplay/);
 if ($player) {
   print "Using '$player' for sound output.\n";
 } else {
@@ -43,23 +45,32 @@ if ($player) {
 
 my $quotedplayer = quotemeta($player);
 
+# Find mbrola.................................
+
+my $mbrola = inc::AutoConf->check_progs(qw/mbrola/);
+
+if ($mbrola) {
+  print "Using '$mbrola' command.\n";
+} else {
+  print "Didn't find mbrola. Download it from\n";
+  print "http://tcts.fpms.ac.be/synthesis/mbrola.html\n";
+  print "and add it to your PATH as 'mbrola'\n";
+  exit 1;
+}
+
+my $quotedmbrola = quotemeta($mbrola);
+
 # Rewrite pt-speak command line tool....................
 
-`perl -e 'while(<>) { s/##PLAYER##/$quotedplayer/; s/##PT1##/$quotedpath/; print }' pt-speak.in > pt-speak`;
+`perl -e 'while(<>) { s/##PLAYER##/$quotedplayer/; s/##MBROLA##/$quotedmbrola/; s/##PT1##/$quotedpath/; print }' pt-speak.in > pt-speak`;
 chmod 0755, 'pt-speak';
 
 # Write Makefile........................................
 
-name("Lingua-PT-Speaker");
-# exe_files([qq/pt-speak/]);
-version_from('lib/Lingua/PT/Speaker.pm');
-build_requires('Config::AutoConf'   => 0.03);
-requires('Text::RewriteRules' => 0.09,
-	 'Lingua::PT::PLN'    => 0.05);
-
-bundle('Config::AutoConf' => 0.03);
-
-install_script('pt-speak');
-
-&WriteAll;
-
+WriteMakefile(
+	      NAME => "Lingua::PT::Speaker",
+	      EXE_FILES => [qq/pt-speak/],
+	      VERSION_FROM => 'lib/Lingua/PT/Speaker.pm',
+	      PREREQ_PM => { 'Text::RewriteRules' => 0.09,
+			     'Lingua::PT::PLN'    => 0.05 },
+	     );

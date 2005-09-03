@@ -16,6 +16,8 @@
     /usr/lib/mbrola/pt1. The module checks for some reasonable
     locations, but not all possible.
 
+    http://tcts.fpms.ac.be/synthesis/mbrola/dba/pt1/pt1-000509.zip
+
   - an .wav command line player. We check for 'play', 'sndplay',
     'esdplay' and 'rawplay' in this order. Please check you have one
     of those in your path.

@@ -1,5 +1,8 @@
-package Config::AutoConf;
-use ExtUtils::CBuilder;
+package inc::AutoConf;
+
+### NOTE: This is a simple version of Config::AutoConf I am using
+### while I cannot find out why Module::Install is not working
+### properly.
 
 use Config;
 
@@ -169,7 +172,7 @@ This function checks if you have a running C compiler.
 =cut
 
 sub check_cc {
-  ExtUtils::CBuilder->have_compiler;
+  0
 }
 
 =head2 check_lib
@@ -185,60 +188,7 @@ It returns 1 if the function exist, 0 otherwise.
 =cut
 
 sub check_lib {
-  my $class = shift;
-  my $lib = shift;
-  my $func = shift;
-
-  my $cbuilder = ExtUtils::CBuilder->new();
-
-  return 0 unless $lib;
-  return 0 unless $func;
-
-  print STDERR "Trying to compile test program to check $func on $lib library...\n";
-
-  my $LIBS = "-l$lib";
-  my $conftest = <<"_ACEOF";
-/* Override any gcc2 internal prototype to avoid an error.  */
-#ifdef __cplusplus
-extern "C"
-#endif
-/* We use char because int might match the return type of a gcc2
-   builtin and then its argument prototype would still apply.  */
-char $func ();
-int
-main ()
-{
-  $func ();
-  return 0;
-}
-_ACEOF
-
-
-
-  my ($fh, $filename) = tempfile( "testXXXXXX", SUFFIX => '.c');
-  $filename =~ m!.c$!;
-  my $base = $`;
-
-  print {$fh} $conftest;
-  close $fh;
-
-  my $obj_file = eval{ $cbuilder->compile(source => $filename) };
-
-  return 0 if $@;
-  return 0 unless $obj_file;
-
-
-  my $exe_file = eval { $cbuilder->link_executable(objects => $obj_file,
-						   extra_linker_flags => $LIBS) };
-
-  unlink $filename;
-  unlink $obj_file if $obj_file;
-  unlink $exe_file if $exe_file;
-
-  return 0 if $@;
-  return 0 unless $exe_file;
-
-  return 1;
+  0
 }
 
 #

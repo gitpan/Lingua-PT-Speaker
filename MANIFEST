@@ -1,26 +1,4 @@
 Changes
-inc/BUNDLES.yml
-inc/BUNDLES/Config-AutoConf-0.03/Changes
-inc/BUNDLES/Config-AutoConf-0.03/lib/Config/AutoConf.pm
-inc/BUNDLES/Config-AutoConf-0.03/Makefile.PL
-inc/BUNDLES/Config-AutoConf-0.03/MANIFEST
-inc/BUNDLES/Config-AutoConf-0.03/META.yml
-inc/BUNDLES/Config-AutoConf-0.03/README
-inc/BUNDLES/Config-AutoConf-0.03/t/00.load.t
-inc/BUNDLES/Config-AutoConf-0.03/t/01.checklib.t
-inc/BUNDLES/Config-AutoConf-0.03/t/02.checkprog.t
-inc/BUNDLES/Config-AutoConf-0.03/t/pod-coverage.t
-inc/BUNDLES/Config-AutoConf-0.03/t/pod.t
-inc/Module/Install.pm
-inc/Module/Install/Base.pm
-inc/Module/Install/Bundle.pm
-inc/Module/Install/Can.pm
-inc/Module/Install/Fetch.pm
-inc/Module/Install/Makefile.pm
-inc/Module/Install/Metadata.pm
-inc/Module/Install/Scripts.pm
-inc/Module/Install/Win32.pm
-inc/Module/Install/WriteAll.pm
 lib/Lingua/PT/Speaker.pm
 lib/Lingua/PT/Speaker/AdjWords.pm
 lib/Lingua/PT/Speaker/nao_acentuadas
@@ -34,4 +12,5 @@ MANIFEST
 META.yml			Module meta-data (added by MakeMaker)
 pt-speak.in
 README
-test.pl
+t/01_load.t
+inc/AutoConf.pm
