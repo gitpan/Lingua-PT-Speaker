@@ -1,5 +1,8 @@
 Revision history for Perl extension Lingua::PT::Speaker.
 
+0.09  Sat Oct 18 17:11:00 2005
+	- use strict;
+
 0.08  Sat Sep  3 14:50:00 2005
         - Pos-YAPC::EU::2005 release.
         - Corrected pt-speak to look to the '-t' option.

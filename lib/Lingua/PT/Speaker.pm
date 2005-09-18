@@ -1,5 +1,8 @@
 # say to emacs, I want -*- cperl -*- mode
 package Lingua::PT::Speaker;
+
+use strict;
+
 use Lingua::PT::PLN;
 
 use Lingua::PT::Speaker::Numbers;
@@ -10,10 +13,10 @@ use Lingua::PT::Speaker::Specials;
 
 require Exporter;
 
-@ISA = qw(Exporter AutoLoader);
-@EXPORT = qw(&speak &toPhon);
+our @ISA = qw(Exporter AutoLoader);
+our @EXPORT = qw(&speak &toPhon);
 
-$VERSION = "0.08";
+our $VERSION = "0.09";
 
 use locale;
 $ENV{LC_LANG}='PT_pt';
@@ -27,8 +30,8 @@ our $debug;
 BEGIN{ $debug = 0;}
 
 
-$vg = '[6AEIOUaeiouyw@]';
-$con = '[BCDFGHJKLMNPQRSTVWXYZÇbcdfghjklmnpqrstvxzç]';
+our $vg = '[6AEIOUaeiouyw@]';
+our $con = '[BCDFGHJKLMNPQRSTVWXYZÇbcdfghjklmnpqrstvxzç]';
 
 
 =head1 NAME
@@ -90,8 +93,8 @@ sub speak {
 
   $text.="." unless $text=~/[!.?]$/;
 
-  $dic = carregaDicionario($ptpho);
-  $no_accented = chargeNoAccented($naoacentuadas);
+  our $dic = carregaDicionario($ptpho);
+  our $no_accented = chargeNoAccented($naoacentuadas);
 
   open PHO, "> $opt{output}";
 
@@ -113,7 +116,7 @@ sub speak {
   $text = Lingua::PT::Speaker::Numbers::nontext($text);
   foreach( map{type_sentence($_) } mysentences($text) ) {
     @{$_->{words}} = words($_->{sentence});
-    @{$_->{phon}}  = map {toPhon($_,$dic)} @{$_->{words}} ;
+    @{$_->{phon}}  = map {toPhon($_,$dic,$no_accented)} @{$_->{words}} ;
     print "\nafter ttf:",join("+",@{$_->{phon}}) if $debug;
     my $t1= Lingua::PT::Speaker::AdjWords::merge(join("/",@{$_->{phon}}));
     if ($opt{special}) {
@@ -122,7 +125,7 @@ sub speak {
         $t1=Lingua::PT::Speaker::Specials::phospecials($special,$t1)
       }
     }
-    @phonemas = (split( /\s+/, $t1), $_->{dot});
+    my @phonemas = (split( /\s+/, $t1), $_->{dot});
     print "\nafter merge:",(join("+",@phonemas)) if $debug;
     print "\nafter prosod:",Lingua::PT::Speaker::Prosody::a( join(" ",@phonemas)) if $debug;
     print PHO Lingua::PT::Speaker::Prosody::a( join(" ",@phonemas)),"\n" ;
@@ -172,7 +175,7 @@ sub gfdict{
 
 
 sub toPhon {
-  my ($word,$dic) = @_;
+  my ($word,$dic,$no_accented) = @_;
   my $prefix = undef;
   my $res = undef;
   $word = lc($word);
@@ -222,7 +225,7 @@ sub toPhon2 {
 
 sub words {
   my $sentence = shift;
-  return @words = grep {$_ !~ /^\s*$/} split(/(\s|,|\.|\?)/, $sentence);
+  return grep {$_ !~ /^\s*$/} split(/(\s|,|\.|\?)/, $sentence);
 }
 
 sub type_sentence {

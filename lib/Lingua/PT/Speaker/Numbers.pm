@@ -4,7 +4,6 @@ use Text::RewriteRules;
 
 use strict;
 our %letra;
-our $marca;
 
 BEGIN {
   %letra = (
@@ -20,8 +19,8 @@ BEGIN {
 	    j=>" jóta ",
 	    k=>" kapa ",
 	    l=>" éle ",
-	    m=>" éme ",
-	    n=>" éne ",
+	    m=>" eme ",
+	    n=>" ene ",
 	    o=>" ó ",
 	    p=>" pê ",
 	    q=>" quê ",
@@ -49,24 +48,21 @@ BEGIN {
 	    "\cM" => ' nova página ',
 	   );
 
-  $marca = "\0x1";
 }
 
-RULES email
+MRULES email
 \n==>
-$marca\.==> ponto $marca
-$marca\@==> arroba $marca
-$marca:\/\/==> doispontos barra barra $marca
-$marca:==> doispontos $marca
-$marca(net)\b==> néte $marca
-$marca(www)\b==> dabliudabliudabliu $marca
-$marca(http)\b==> gátêtêpê $marca
-$marca(com)\b==> cóme $marca
-$marca(org)\b==> orgue $marca
-$marca(http|[a-zA-Z]{1,3}?)\b=e=>join("",map {$letra{lc($_)}} split(//,$1)).", $marca"
-$marca(.+?)\b==>$1 $marca
-$marca$==>
-^==>$marca!! not(/\s/)
+\.==> ponto 
+\@==> arroba 
+:\/\/==> doispontos barra barra 
+:==> doispontos 
+(net)\b==> néte 
+(www)\b==> dabliudabliudabliu 
+(http)\b==> agátêtêpê 
+(com)\b==> cóme 
+(org)\b==> orgue 
+([a-zA-Z]{1,3}?)\b=e=>join("",map {$letra{lc($_)}} split(//,$1)).", "
+(.+?)\b==>$1 
 ENDRULES
 
 RULES nontext
