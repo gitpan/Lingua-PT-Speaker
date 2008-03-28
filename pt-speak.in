@@ -53,7 +53,9 @@ if(@ARGV && $ARGV[0] =~ /\.pho$/) { `##MBROLA## -t $t $pt1 $ARGV[0] $tmp.wav`;
 
 while($line = <>) {
   $line =~ s/[«»"']//g;
-  $line =~ s![()\[\]]!,!g;
+  $line =~ s![\[\]]!,!g;
+  $line =~ s!([^_])\(!$1,!g;
+  $line =~ s!\)([^_])!,$1!g;
   $line =~ s!\<.*?\>!!g if $notags;
   $line =~ s!_{3,}! barra horizontal !g;
 #  $line =~ s!\~! til !g;

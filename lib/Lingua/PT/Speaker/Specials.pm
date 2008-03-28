@@ -57,19 +57,17 @@ ch([aeiou])==>tx$1
 
 ENDRULES
 
-RULES viseu
+RULES/m viseu
 
-=b=>s/^/_/;
-_v==>b_
-_s==>S_
-_z==>Z_
-_S==>Z_
-_(.)==>$1_
-_$==>
+v==>b
+s==>S
+z==>Z
+S==>Z
+([^vszS]+)==>$1
 
 ENDRULES
 
-RULES spain
+RULES/m spain
 
 \bj==>r
 ção==>ción

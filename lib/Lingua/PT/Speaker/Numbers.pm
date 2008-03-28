@@ -4,35 +4,36 @@ use Text::RewriteRules;
 
 use strict;
 our %letra;
+our %mat;
 
 BEGIN {
   %letra = (
-	    a=>" á ",
-	    b=>" bê ",
-	    c=>" cê ",
-	    d=>" dê ",
-	    e=>" é ",
-	    f=>" efe ",
-	    g=>" guê ",
-	    h=>" agá ",
-	    i=>" í ",
-	    j=>" jóta ",
-	    k=>" kapa ",
-	    l=>" éle ",
-	    m=>" eme ",
-	    n=>" ene ",
-	    o=>" ó ",
-	    p=>" pê ",
-	    q=>" quê ",
-	    r=>" érre ",
-	    s=>" ésse ",
-	    t=>" tê ",
-	    u=>" ú ",
-	    v=>" vê ",
-	    w=>" dobliu ",
-	    x=>" xis ",
-	    y=>" ipsilon ",
-	    z=>" zê ",
+	    a=>"á",
+	    b=>"bê",
+	    c=>"cê",
+	    d=>"dê",
+	    e=>"é",
+	    f=>"éfe",
+	    g=>"guê",
+	    h=>"agá",
+	    i=>"í",
+	    j=>"jóta",
+	    k=>"kápa",
+	    l=>"éle",
+	    m=>"éme",
+	    n=>"éne",
+	    o=>"ó",
+	    p=>"pê",
+	    q=>"quê",
+	    r=>"érre",
+	    s=>"ésse",
+	    t=>"tê",
+	    u=>"ú",
+	    v=>"vê",
+	    w=>"dablew",
+	    x=>"xís",
+	    y=>"ípsilon",
+	    z=>"zê",
 
 	    '~' =>" til ",
 	    ':' =>" dois pontos ",
@@ -45,32 +46,86 @@ BEGIN {
 	    '>' => ' maior ',
 	    '|' => ' barra ',
 	    '#' => ' cardinal ',
+            '%' => ' por cento ',
 	    "\cM" => ' nova página ',
+	   );
+
+  %mat = (
+	    '~' =>" til ",
+	    ':' =>" dois pontos ",
+	    '-' =>", menos ",
+	    '_' =>" sublinhado ",
+	    '/' =>" sobre ",
+	    '$' =>" dólar ",
+	    '=' => ', igual ',
+	    '=>' => ', implica ',
+	    '<=>' => ', equivale a ',
+	    '^' => ' elevado a ',
+	    '/\\' => ' ii ',
+	    '\/' => ', ouu ',
+	    '+' => ', mais ',
+	    '*' => ' vezes ',
+	    '<' => ', menor ',
+	    '>' => ', maior ',
+	    '|' => ' barra ',
+	    '!' => ' factorial ',
+            '%' => ' por cento ',
+	    '#' => ' cardinal de ',
 	   );
 
 }
 
-MRULES email
+RULES/m email
 \n==>
 \.==> ponto 
 \@==> arroba 
 :\/\/==> doispontos barra barra 
 :==> doispontos 
 (net)\b==> néte 
-(www)\b==> dabliudabliudabliu 
+(www)\b==> dablidablidabliw 
 (http)\b==> agátêtêpê 
 (com)\b==> cóme 
-(org)\b==> orgue 
-([a-zA-Z]{1,3}?)\b=e=>join("",map {$letra{lc($_)}} split(//,$1)).", "
+(org)\b==> órg 
+#([a-zA-Z]{1,3}?)\b=e=>join("",map {$letra{lc($_)}} split(//,$1)).", "
+([a-zA-Z]{1,3}?)\b=e=>" ".sigla($1). " "
 (.+?)\b==>$1 
 ENDRULES
 
-RULES nontext
+RULES/m acron
+e(?=[nm])==>ê
+a==>á
+e==>é
+i==>í
+o==>ó
+u==>ú
+ENDRULES
+
+RULES/m sigla
+([a-zA-Z])=e=>$letra{lc($1)} || " $1 "
+ENDRULES
+
+RULES/m math
+\b([a-z])\b\s*2\b==> $letra{$1} ao quadrado 
+\b([a-z])\b\s*3\b==> $letra{$1} ao cubo 
+\b([a-z])\b\s*(\d)\b==> $letra{$1} à $2ª 
+([^\w\s]+)==> $mat{$1} !! defined $mat{$1}
+\b([a-z])\b==> $letra{$1} 
+\bcos\b==>cosseno de
+\bs[ie]n\b==>seno de
+\blog\b==>logaritmo de 
+\bexp\b==>exponencial de 
+\bsqrt\b==>raíz de 
+\bmod\b==>módulo de 
+ENDRULES
+
+RULES/m nontext
 (\w)-(\w)==>$1 $2
-([\-*=<>#\|\~_/\cM:])=e=>$letra{$1}
+([\-*=<>#\|\~_/\cM:%])=e=>" $letra{$1} "
 ENDRULES
 
 RULES number
+(\d+)\s*\%==>$1 por cento
+(\d+)\.(\d+)==>$1 ponto $2
 (\d+)(000000)\b==>$1 milhão!!            $1 == 1
 (\d+)(000000)\b==>$1 milhões
 (\d+)(000)(\d{3})==>$1 milhão e $3!!     $1 == 1

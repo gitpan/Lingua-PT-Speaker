@@ -1,5 +1,8 @@
 Revision history for Perl extension Lingua::PT::Speaker.
 
+0.10  Fri Mar 28 20:53:60 2008
+	- fixed some sounds like 'ontem'
+
 0.09  Sat Oct 18 17:11:00 2005
 	- use strict;
 

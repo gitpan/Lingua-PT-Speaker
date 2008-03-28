@@ -16,7 +16,7 @@ require Exporter;
 our @ISA = qw(Exporter AutoLoader);
 our @EXPORT = qw(&speak &toPhon);
 
-our $VERSION = "0.09";
+our $VERSION = "0.10";
 
 use locale;
 $ENV{LC_LANG}='PT_pt';
@@ -28,7 +28,6 @@ our $naoacentuadas = "$`/Speaker/nao_acentuadas";
 our $debug;
 
 BEGIN{ $debug = 0;}
-
 
 our $vg = '[6AEIOUaeiouyw@]';
 our $con = '[BCDFGHJKLMNPQRSTVWXYZÇbcdfghjklmnpqrstvxzç]';
@@ -98,10 +97,17 @@ sub speak {
 
   open PHO, "> $opt{output}";
 
-  while($text =~ s{(\w+\@(\w+\.)+\w+)}{Lingua::PT::Speaker::Numbers::email($1)}ge) {}
-  while($text =~ s{(((((ht|f)tp://)|(www\.))(\w+\.)+\w+)(/\w+)*)}{Lingua::PT::Speaker::Numbers::email($1)}ge){}
-  while($text =~ s{(\d+[ºª])}{Lingua::PT::Speaker::Numbers::ordinais($1)}ge) {}
-  while($text =~ s{(\d+)}{Lingua::PT::Speaker::Numbers::number($1)}ge) {}
+  $text =~ s{_\((.*?)\)_}{Lingua::PT::Speaker::Numbers::math($1)}ge;
+    print STDERR "1 {{$text}}\n" if $debug ;
+  $text =~ s{(\w+\@(\w+\.)+\w+)}{Lingua::PT::Speaker::Numbers::email($1)}ge;
+    print STDERR "2\n" if $debug ;
+  $text =~ s{(((((ht|f)tp://)|(www\.))(\w+\.)+\w+)(/\w+)*)}{Lingua::PT::Speaker::Numbers::email($1)}ge;
+    print STDERR "3\n" if $debug ;
+  $text =~ s{(\d+[ºª])}{Lingua::PT::Speaker::Numbers::ordinais($1)}ge;
+    print STDERR "4\n" if $debug ;
+  $text =~ s{(\d+(\.\d+)?)}{Lingua::PT::Speaker::Numbers::number($1)}ge;
+    print STDERR "5\n" if $debug ;
+  $text =~ s{\b([B-DF-HJ-NP-TV-Z]{1,7})\b}{Lingua::PT::Speaker::Numbers::sigla($1)}ge;
 
   if ($opt{special}) {
     my $special;
@@ -112,12 +118,15 @@ sub speak {
 
 #  $text=~s{;}{,,}g;
 
-#  print "!$text!\n";
+  print STDERR  "6 !$text" if $debug ;
   $text = Lingua::PT::Speaker::Numbers::nontext($text);
+  print STDERR "7\n" if $debug ;
   foreach( map{type_sentence($_) } mysentences($text) ) {
     @{$_->{words}} = words($_->{sentence});
+    print STDERR "8 before toPhon\n" if $debug ;
     @{$_->{phon}}  = map {toPhon($_,$dic,$no_accented)} @{$_->{words}} ;
-    print "\nafter ttf:",join("+",@{$_->{phon}}) if $debug;
+    print STDERR "9 after toPhon / ttf:",join("+",@{$_->{phon}}),"\n" if $debug;
+    print STDERR "10 before AdjWords::merge\n" if $debug ;
     my $t1= Lingua::PT::Speaker::AdjWords::merge(join("/",@{$_->{phon}}));
     if ($opt{special}) {
       my $special;
@@ -126,8 +135,8 @@ sub speak {
       }
     }
     my @phonemas = (split( /\s+/, $t1), $_->{dot});
-    print "\nafter merge:",(join("+",@phonemas)) if $debug;
-    print "\nafter prosod:",Lingua::PT::Speaker::Prosody::a( join(" ",@phonemas)) if $debug;
+    print STDERR "11 after merge:",(join("+",@phonemas)),"\n" if $debug;
+    print STDERR "12 after prosod:",Lingua::PT::Speaker::Prosody::a( join(" ",@phonemas)),"\n" if $debug;
     print PHO Lingua::PT::Speaker::Prosody::a( join(" ",@phonemas)),"\n" ;
 
   }
@@ -217,9 +226,10 @@ sub toPhon {
 
 sub toPhon2 {
   my $word = shift;
-  print "Before silabas: $word\n" if $debug;
+  print STDERR "9.1 Before silabas: $word\n" if $debug;
   my $t = join "", silabas($word);
-  print "After silabas: $t\n" if $debug;
+  print STDERR "9.2 After silabas: $t\n" if $debug;
+  print STDERR "9.3 before wors2sampa\n" if $debug;
   return Lingua::PT::Speaker::Words2Sampa::run($t, $debug);
 }
 
