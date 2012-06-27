@@ -6,7 +6,7 @@ my $pt1 = '##PT1##'; #/usr/lib/mbrola/pt1/pt1';
 
 # use vars qw{ $debug $raw $esd $t $l $q $show $notags};
 our ($debug, $raw, $esd, $play, $sndplay, $t, $l, $k, $q, $show, $notags,
-     $cebolinha, $porto, $viseu, $spain, $lamego, $sotaque,
+     $cebolinha, $porto, $viseu, $spain, $lamego, $sotaque, $aplay,
      $wav,
      $help, $h);
 
@@ -15,6 +15,7 @@ $default = "play" if $default =~ m!##player##!i; # Hack O:-)
 $default = "raw" if $raw;
 $default = "sndplay" if $sndplay;
 $default = "esd" if $esd;
+$default = "aplay" if $aplay;
 
 use Lingua::PT::Speaker;
 
@@ -24,8 +25,10 @@ Lingua::PT::Speaker::debug() if $debug;
 if ($h || $help) {
   print " Usage:\n";
   print "\t-play     use play to output sound\n";
+  print "\t-aplay    use aplay to output sound (alsa)\n";
   print "\t-raw      use rawplay to output sound\n";
   print "\t-esd      use esound daemon to output sound\n";
+  print "\t-utf8     utf8\n";
   print "\t-sndplay  use sndplay to output sound\n";
   print "\t-h(elp)   this help screen\n";
   print "\t-notags   remove HTML-like tags from text\n";
@@ -45,14 +48,23 @@ my $tmp="/tmp/_$$";
 
 $/="" if  $l;
 
-if(@ARGV && $ARGV[0] =~ /\.pho$/) { `##MBROLA## -t $t $pt1 $ARGV[0] $tmp.wav`; 
-                 `play $tmp.wav`; 
-                  unlink( "$tmp.wav") unless($q);
-                  exit 0;
-               }
+if(@ARGV && $ARGV[0] =~ /\.pho$/) { 
+   if($wav){
+      `##MBROLA## -t $t $pt1 $ARGV[0] $wav`; 
+      `play $wav`; 
+   }
+   else{
+      `##MBROLA## -t $t $pt1 $ARGV[0] $tmp.wav`; 
+      `play $tmp.wav`; 
+      unlink( "$tmp.wav") unless($q);
+   }
+   exit 0;
+}
+
+if($utf8){binmode(STDIN,":utf8")};
 
 while($line = <>) {
-  $line =~ s/[«»"']//g;
+  $line =~ s/[Â«Â»"']//g;
   $line =~ s![\[\]]!,!g;
   $line =~ s!([^_])\(!$1,!g;
   $line =~ s!\)([^_])!,$1!g;
@@ -65,7 +77,7 @@ while($line = <>) {
 #  $line =~ s!\>! maior !g;
 #  $line =~ s!\|! barra !g;
 #  $line =~ s!\#! cardinal !g;
-#  $line =~ s!! . nova página. !g;
+#  $line =~ s!! . nova pÃ¡gina. !g;
 
   next unless $line =~ /\w/;
 
@@ -103,14 +115,22 @@ while($line = <>) {
     unlink( "$tmp.pho","$tmp.wav") unless $q;
   }
 
-  elsif ($default =~ m!play$!) {
+  elsif ($default =~ m!^play$!) {
     `##MBROLA## -t $t $pt1 $tmp.pho $tmp.wav`;
     `play $tmp.wav`;
+    unlink( "$tmp.pho","$tmp.wav") unless $q;
+  }
+
+  elsif ($default =~ m!^aplay$!) {
+    `##MBROLA## -t $t $pt1 $tmp.pho $tmp.wav`;
+    `aplay -q $tmp.wav`;
     unlink( "$tmp.pho","$tmp.wav") unless $q;
   }
 }
 
 __END__
+
+=encoding UTF-8
 
 =head1 NAME
 
@@ -127,10 +147,13 @@ pt-speak - perl script to read texts using Mbrola and Lingua::PT::Speaker
     -notags       dont read html like tags
     -raw          use raw player
     -esd          use esd sound
+    -aplay        use aplay (ALSA mixer)
+    -utf8         encoding = utf8 (default = latin1)
     -q|-k         dont remove /tmp/... temp. files
     -show         show the current line (for debug)
     -sotaque=cebolinha,porto
     -porto        to ask for Porto's sotaque
+    -wav=out.wav  to create a wave file
 
 =head1 DESCRIPTION
 
@@ -140,7 +163,7 @@ Mbrola speech synthesizer.
 =head1 AUTHOR
 
 J.Joao Almeida, jj@di.uminho.pt
-Alberto Simões, ambs@cpan.org
+Alberto SimÃµes, ambs@cpan.org
 
 =head1 SEE ALSO
 

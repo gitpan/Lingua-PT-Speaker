@@ -14,3 +14,4 @@ pt-speak.in
 README
 t/01_load.t
 inc/AutoConf.pm
+META.json                                Module JSON meta-data (added by MakeMaker)

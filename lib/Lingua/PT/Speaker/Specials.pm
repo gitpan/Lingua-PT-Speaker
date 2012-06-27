@@ -36,10 +36,10 @@ ENDRULES
 
 RULES porto
 
-oão==>uoum
-ão==>oum
-am==>om
-em\b==>âinnhe
+oão==>uounhe
+ão==>ounhe
+am==>oum
+em\b==>éinhee
 v==>b
 
 ENDRULES
@@ -69,6 +69,7 @@ ENDRULES
 
 RULES/m spain
 
+^o\b==>éle
 \bj==>r
 ção==>ción
 ções==>cións

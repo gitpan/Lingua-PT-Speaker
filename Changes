@@ -1,5 +1,8 @@
 Revision history for Perl extension Lingua::PT::Speaker.
 
+0.11  Wed Jun 27 17:13:13 WEST 2012
+        - support alsa aplay
+
 0.10  Fri Mar 28 20:53:60 2008
 	- fixed some sounds like 'ontem'
 

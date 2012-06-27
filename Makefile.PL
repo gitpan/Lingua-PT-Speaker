@@ -18,10 +18,9 @@ for my $pt1path (@pt1paths) {
 if ($PT1) {
   print "Found PT1 phonemes at '$PT1'.\n";
 } else {
-  print "Did not found PT1 phonemes. Please enter full path: ";
-  chomp(my $path = <>);
+  my $path = prompt("Did not found PT1 phonemes. Please enter full path:");
 
-  if (-f $path && -r $path) {
+  if (($path eq "skip") || (-f $path && -r $path)) {
     $PT1 = $path;
   } else {
     print "Did not found PT1 phonemes in supplied path.\n";
@@ -55,7 +54,8 @@ if ($mbrola) {
   print "Didn't find mbrola. Download it from\n";
   print "http://tcts.fpms.ac.be/synthesis/mbrola.html\n";
   print "and add it to your PATH as 'mbrola'\n";
-  exit 1;
+  $mbrola = 'mbrola';
+  #exit 1;
 }
 
 my $quotedmbrola = quotemeta($mbrola);

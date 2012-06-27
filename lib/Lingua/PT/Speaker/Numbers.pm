@@ -5,39 +5,42 @@ use Text::RewriteRules;
 use strict;
 our %letra;
 our %mat;
+use utf8;
+our %fixnum;
 
 BEGIN {
   %letra = (
-	    a=>"á",
-	    b=>"bê",
-	    c=>"cê",
-	    d=>"dê",
-	    e=>"é",
-	    f=>"éfe",
-	    g=>"guê",
-	    h=>"agá",
-	    i=>"í",
-	    j=>"jóta",
-	    k=>"kápa",
-	    l=>"éle",
-	    m=>"éme",
-	    n=>"éne",
-	    o=>"ó",
-	    p=>"pê",
-	    q=>"quê",
-	    r=>"érre",
-	    s=>"ésse",
-	    t=>"tê",
-	    u=>"ú",
-	    v=>"vê",
+	    a=>"Ã¡",
+	    b=>"bÃª",
+	    c=>"cÃª",
+	    d=>"dÃª",
+	    e=>"Ã©",
+	    f=>"Ã©fe",
+	    g=>"guÃª",
+	    h=>"agÃ¡",
+	    i=>"Ã­",
+	    j=>"jÃ³ta",
+	    k=>"kÃ¡pa",
+	    l=>"Ã©le",
+	    m=>"Ã©me",
+	    n=>"Ã©ne",
+	    o=>"Ã³",
+	    p=>"pÃª",
+            'Ï€' => ' pi ',
+	    q=>"quÃª",
+	    r=>"Ã©rre",
+	    s=>"Ã©sse",
+	    t=>"tÃª",
+	    u=>"Ãº",
+	    v=>"vÃª",
 	    w=>"dablew",
-	    x=>"xís",
-	    y=>"ípsilon",
-	    z=>"zê",
+	    x=>"xÃ­s",
+	    y=>"Ã­pslon",
+	    z=>"zÃª",
 
 	    '~' =>" til ",
 	    ':' =>" dois pontos ",
-	    '-' =>" ífen ",
+	    '-' =>" Ã­fen ",
 	    '_' =>" sublinhado ",
 	    '/' =>" barra ",
 	    '=' => ' igual ',
@@ -46,32 +49,60 @@ BEGIN {
 	    '>' => ' maior ',
 	    '|' => ' barra ',
 	    '#' => ' cardinal ',
-            '%' => ' por cento ',
-	    "\cM" => ' nova página ',
+            '%' => ' prcento ',
+	    "\cM" => ' nova pÃ¡gina ',
 	   );
 
   %mat = (
 	    '~' =>" til ",
 	    ':' =>" dois pontos ",
-	    '-' =>", menos ",
+	    '-' =>" menos ",
 	    '_' =>" sublinhado ",
 	    '/' =>" sobre ",
-	    '$' =>" dólar ",
-	    '=' => ', igual ',
+	    '$' =>" dÃ³lar ",
+	    '=' => ' Ã© igual a ',
 	    '=>' => ', implica ',
 	    '<=>' => ', equivale a ',
 	    '^' => ' elevado a ',
 	    '/\\' => ' ii ',
 	    '\/' => ', ouu ',
-	    '+' => ', mais ',
+	    '+' => ' mais ',
 	    '*' => ' vezes ',
 	    '<' => ', menor ',
+	    '{' => 'abre chaveta, ',
+	    '}' => 'fecha chaveta, ',
 	    '>' => ', maior ',
+            '>=' => ' maior ou igual ',
+            '<=' => ' menor ou igual ',
+            '+-' =>"mais ou menos ",
+            'Â±' => "mais ou menos ",
 	    '|' => ' barra ',
 	    '!' => ' factorial ',
-            '%' => ' por cento ',
+            '%' => ' precento ',
 	    '#' => ' cardinal de ',
+            'Â²' => ' ao quadrado ',
+            'Â³' => ' ao quadrado ',
+            'âˆˆ' => ' pertence a ',
+            'â‰ ' => ' diferente de ',
+            'Ï€' => ' pi ',
 	   );
+
+  %fixnum=(
+   0=> "zero", 1=> "um", 2=> "dois", 3=> "trÃªs", 4=> "quatro", 5=> "cinco",
+   6=> "seis", 7=> "sete", 8=> "oito", 9=> "nove", 10=> "dez",
+
+   11=> "onze", 12=> "doze", 13=> "treze", 14=> "catorze", 15=> "quinze",
+   16=> "dezasseis", 17=> "dezassete", 18=> "dezoito", 19=> "dezanove",
+
+   20=> "vinte", 30=> "trinta", 40=> "quarenta", 50=> "cinquenta",
+   60=> "sessenta", 70=> "setenta", 80=> "oitenta", 90=> "noventa",
+
+   100=> "cem", 200=> "duzentos", 300=> "trezentos", 400=> "quatrocentos",
+   500=> "quinhentos", 600=> "seiscentos", 700=> "setecentos",
+   800=> "oitocentos", 900=> "novecentos",
+
+   1000=> "mil", 1000000=> "um milhÃ£o",
+  );
 
 }
 
@@ -81,23 +112,23 @@ RULES/m email
 \@==> arroba 
 :\/\/==> doispontos barra barra 
 :==> doispontos 
-(net)\b==> néte 
+(net)\b==> nÃ©te 
 (www)\b==> dablidablidabliw 
-(http)\b==> agátêtêpê 
-(com)\b==> cóme 
-(org)\b==> órg 
+(http)\b==> agÃ¡tÃªtÃªpÃª 
+(com)\b==> cÃ³me 
+(org)\b==> Ã³rg 
 #([a-zA-Z]{1,3}?)\b=e=>join("",map {$letra{lc($_)}} split(//,$1)).", "
 ([a-zA-Z]{1,3}?)\b=e=>" ".sigla($1). " "
 (.+?)\b==>$1 
 ENDRULES
 
 RULES/m acron
-e(?=[nm])==>ê
-a==>á
-e==>é
-i==>í
-o==>ó
-u==>ú
+e(?=[nm])==>Ãª
+a==>Ã¡
+e==>Ã©
+i==>Ã­
+o==>Ã³
+u==>Ãº
 ENDRULES
 
 RULES/m sigla
@@ -105,18 +136,62 @@ RULES/m sigla
 ENDRULES
 
 RULES/m math
-\b([a-z])\b\s*2\b==> $letra{$1} ao quadrado 
-\b([a-z])\b\s*3\b==> $letra{$1} ao cubo 
-\b([a-z])\b\s*(\d)\b==> $letra{$1} à $2ª 
+\(\s*(\d+)\s*\)==> $1 
+\(\s*(\w)\s*\)==> $letra{$1} 
+\(==> abre , 
+\)==> , fecha 
+
+([a-z])(?=\(\s*(\w+)\s*\))==> $letra{$1} de
+([a-z])(?=\(\s*\w+\s*(,\s*\w+\s*)*\))==> $letra{$1} de,
+#([a-z])\s+(?=\s*\()==> $letra{$1} vezes
+(\d+)(?=\s*\()==> $1 vezes
+
+(\d+\/\d)\b=e=>number($1)
+(\d+)\/(\d+)==> $1 sobre $2
+(\w+)\/(\d+)==> $letra{$1} sobre $2
+(\d+)\/(\w+)==> $1 sobre $letra{$2}
+(\w+)\/(\w+)==> $letra{$1} sobre $letra{$2}
+
+([a-z])\s+2\b==> $letra{$1} ao quadrado
+([a-z])\s+3\b==> $letra{$1} ao cubo
+([a-z])\s+(\d)\b==> $letra{$1} Ã  $2Âª
+\^\s*2\b==> $letra{$1} ao quadrado
+\^\s*3\b==> $letra{$1} ao cubo
+\^\s*(\d)\b==> $letra{$1} Ã  $2Âª
+\^\s*(\d+)\b==> $letra{$1} elevado a $2
+
+(\d+)\s+2\b==> $1 ao quadrado
+(\d+)\s+3\b==> $1 ao cubo
+(\d+)\s+(\d)\b==> $1 Ã  $2Âª
+
+sqrt\((\w|\d+)\s*\)==> reiÃ­s de $1
+sqrt\b==> reiÃ­s de
+cbrt\b==> reiÃ­s cÃºbica de
+sqrt(\d+)\b==> reiÃ­s $1Âª de
+
+([a-z])(?=[Â²Â³0-9]+)==> $letra{$1} 
+
 ([^\w\s]+)==> $mat{$1} !! defined $mat{$1}
-\b([a-z])\b==> $letra{$1} 
-\bcos\b==>cosseno de
-\bs[ie]n\b==>seno de
-\blog\b==>logaritmo de 
-\bexp\b==>exponencial de 
-\bsqrt\b==>raíz de 
-\bmod\b==>módulo de 
+([Â²Â³Ï€])==> $mat{$1} !! defined $mat{$1}
+([a-z])\b==> $letra{$1} 
+
+log\b==>logaritmo de 
+log10\b==>logaritmo base 10 de 
+exp\b==>exponencial de 
+
+cos\b==>cosseno de
+s[ie]n\b==>seno de
+tg\b==>tangente de 
+tgh\b==>tangente hiperbÃ³lica de 
+sinh\b==>seno hiperbÃ³lico de 
+cosh\b==>cosseno hiperbÃ³lico de 
+
+mod\b==>mÃ³dulo de 
+rand\d==>randome de
+([a-zA-Z]+)==>$1
+
 ENDRULES
+
 
 RULES/m nontext
 (\w)-(\w)==>$1 $2
@@ -124,18 +199,33 @@ RULES/m nontext
 ENDRULES
 
 RULES number
+(\d+)[Ee](-?\d+)==>$1 vezes 10 levantado a $2
+-(\d+)==>menos $1
 (\d+)\s*\%==>$1 por cento
-(\d+)\.(\d+)==>$1 ponto $2
-(\d+)(000000)\b==>$1 milhão!!            $1 == 1
-(\d+)(000000)\b==>$1 milhões
-(\d+)(000)(\d{3})==>$1 milhão e $3!!     $1 == 1
-(\d+)(\d{3})(000)==>$1 milhão e $2 mil!! $1 == 1
-(\d+)(\d{6})==>$1 milhão, $2!!           $1 == 1
-(\d+)(000)(\d{3})==>$1 milhões e $3
-(\d+)(\d{3})(000)==>$1 milhões e $2 mil
-(\d+)(\d{6})==>$1 milhões, $2
 
-(\d+)(000)\b==>mil!!                     $1 == 1
+(\d+)\.(0\d+)\b==>$1 ponto __digs$2.
+(\d+)\.(\d{1,3})\b==>$1 ponto $2
+(\d+)\.(\d+)==>$1 ponto __digs$2.
+__digs(\d+)\.=e=>join(" ",split(//,$1))
+
+#FracÃ§Ãµes
+\b1/2\b==>um meio 
+\b1/3\b==>um terÃ§o 
+\b1/([4-9])\b=e=>"um ". ordinais("$1Âº") ." "
+\b(\d)/2\b==>$1 meios 
+\b(\d)/3\b==>$1 terÃ§os 
+\b(\d)/([4-9])\b=e=>"$1 ". ordinais("$2Âº") . "s "
+
+\b(\d+)\b==>$fixnum{$1}!!defined $fixnum{$1}
+
+(\d+)(000000)\b==>$1 milhÃµes
+(\d+)(000)(\d{3})==>$1 milhÃ£o e $3!!     $1 == 1
+(\d+)(\d{3})(000)==>$1 milhÃ£o e $2 mil!! $1 == 1
+(\d+)(\d{6})==>$1 milhÃ£o, $2!!           $1 == 1
+(\d+)(000)(\d{3})==>$1 milhÃµes e $3
+(\d+)(\d{3})(000)==>$1 milhÃµes e $2 mil
+(\d+)(\d{6})==>$1 milhÃµes, $2
+
 (\d+)(000)\b==>$1 mil
 (\d+)0(\d{2})==>mil e $2!!               $1 == 1
 (\d+)(\d00)==>mil e $2!!                 $1 == 1
@@ -144,134 +234,96 @@ RULES number
 (\d+)(\d00)==>$1 mil e $2
 (\d+)(\d{3})==>$1 mil, $2
 
-100==>cem 
-1(\d\d)==>cento e $1 
+1(\d\d)==>cento e $1
 0(\d\d)==>$1
-200==>duzentos 
-300==>trezentos 
-400==>quatrocentos 
-500==>quinhentos 
-600==>seiscentos 
-700==>setecentos 
-800==>oitocentos 
-900==>novecentos 
 (\d)(\d\d)==>${1}00 e $2
-
-10==>dez 
-11==>onze 
-12==>doze 
-13==>treze 
-14==>catorze 
-15==>quinze 
-16==>dezasseis 
-17==>dezassete 
-18==>dezoito 
-19==>dezanove 
-20==>vinte 
-30==>trinta 
-40==>quarenta 
-50==>cinquenta 
-60==>sessenta 
-70==>setenta 
-80==>oitenta 
-90==>noventa 
 0(\d)==>$1
 (\d)(\d)==>${1}0 e $2
-
-1==>um 
-2==>dois 
-3==>três 
-4==>quatro 
-5==>cinco 
-6==>seis 
-7==>sete 
-8==>oito 
-9==>nove 
-0$==>zero 
-0==> 
+0$==>zero
+0==>
   ==> 
  ,==>,
 ENDRULES
 
 RULES ordinais
-(\d)\.([ºª])==>$1$2
-\b1000000º==>milionésimo
-\b1000000ª==>milionésima
-\b1000º==>milésimo
-\b1000ª==>milésima 
+(\d)\.([ÂºÂª])==>$1$2
+\b1000000Âº==>milionÃ©simo
+\b1000000Âª==>milionÃ©sima
+\b1000Âº==>milÃ©simo
+\b1000Âª==>milÃ©sima 
 
-([2-9]\d\d)([ºª])==>$1 $2
+([2-9]\d\d)([ÂºÂª])==>$1 $2
 
-\b1(\d\d\d)([ºª])==>1000$2 $1$2
+\b1(\d\d\d)([ÂºÂª])==>1000$2 $1$2
 
-(\d\d\d\d)([ºª])==>$1 $2
+(\d\d\d\d)([ÂºÂª])==>$1 $2
 
-100º==>centésimo
-200º==>ducentésimo
-300º==>tricentésimo
-400º==>quadrigentésimo
-500º==>quingentésimo
-600º==>sexcentésimo
-700º==>septingentésimo
-800º==>octingentésimo
-900º==>nongentésimo
+100Âº==>centÃ©simo
+200Âº==>ducentÃ©simo
+300Âº==>tricentÃ©simo
+400Âº==>quadrigentÃ©simo
+500Âº==>quingentÃ©simo
+600Âº==>sexcentÃ©simo
+700Âº==>septingentÃ©simo
+800Âº==>octingentÃ©simo
+900Âº==>nongentÃ©simo
 
-100ª==>centésima 
-200º==>ducentésima
-300º==>tricentésima
-400º==>quadrigentésima
-500º==>quingentésima
-600º==>sexcentésima
-700º==>septingentésima
-800º==>octingentésima
-900º==>nongentésima
+100Âª==>centÃ©sima 
+200Âº==>ducentÃ©sima
+300Âº==>tricentÃ©sima
+400Âº==>quadrigentÃ©sima
+500Âº==>quingentÃ©sima
+600Âº==>sexcentÃ©sima
+700Âº==>septingentÃ©sima
+800Âº==>octingentÃ©sima
+900Âº==>nongentÃ©sima
 
-(\d)(\d)(\d)º==>${1}00º ${2}0º ${3}º
-(\d)(\d)(\d)ª==>${1}00ª ${2}0ª ${3}ª
+(\d)(\d)(\d)Âº==>${1}00Âº ${2}0Âº ${3}Âº
+(\d)(\d)(\d)Âª==>${1}00Âª ${2}0Âª ${3}Âª
 
-10º==>décimo
-20º==>vigésimo
-30º==>trigésimo
-40º==>quadragésimo
-50º==>quinquagésimo
-60º==>sexagésimo
-70º==>septuagésimo
-80º==>octogésimo
-90º==>nonagésimo
+10Âº==>dÃ©cimo
+20Âº==>vigÃ©simo
+30Âº==>trigÃ©simo
+40Âº==>quadragÃ©simo
+50Âº==>quinquagÃ©simo
+60Âº==>sexagÃ©simo
+70Âº==>septuagÃ©simo
+80Âº==>octogÃ©simo
+90Âº==>nonagÃ©simo
 
-10ª==>décima 
-20ª==>vigésima 
-30ª==>trigésima 
-40ª==>quadragésima 
-50ª==>quinquagésima 
-60ª==>sexagésima 
-70ª==>septuagésima 
-80ª==>octogésima 
-90ª==>nonagésima 
-(\d)(\d)º==>${1}0º $2º
-(\d)(\d)ª==>${1}0ª $2ª
+10Âª==>dÃ©cima 
+20Âª==>vigÃ©sima 
+30Âª==>trigÃ©sima 
+40Âª==>quadragÃ©sima 
+50Âª==>quinquagÃ©sima 
+60Âª==>sexagÃ©sima 
+70Âª==>septuagÃ©sima 
+80Âª==>octogÃ©sima 
+90Âª==>nonagÃ©sima 
+(\d)(\d)Âº==>${1}0Âº $2Âº
+(\d)(\d)Âª==>${1}0Âª $2Âª
 
-1º==>primeiro 
-2º==>segundo 
-3º==>terceiro 
-4º==>quarto 
-5º==>quinto 
-6º==>sexto 
-7º==>sétimo 
-8º==>oitavo 
-9º==>nono 
-º==> ésimo
+1Âº==>primeiro 
+2Âº==>segundo 
+3Âº==>terceiro 
+4Âº==>quarto 
+5Âº==>quinto 
+6Âº==>sexto 
+7Âº==>sÃ©timo 
+8Âº==>oitavo 
+9Âº==>nono 
+Âº==> Ã©simo
 
-1ª==>primeira 
-2ª==>segunda 
-3ª==>terceira 
-4ª==>quarta 
-5ª==>quinta 
-6ª==>sexta 
-7ª==>sétima 
-8ª==>oitava 
-9ª==>nona 
-ª==> ésima  
+1Âª==>primeira 
+2Âª==>segunda 
+3Âª==>terceira 
+4Âª==>quarta 
+5Âª==>quinta 
+6Âª==>sexta 
+7Âª==>sÃ©tima 
+8Âª==>oitava 
+9Âª==>nona 
+Âª==> Ã©sima  
 
   ==> 
 ENDRULES
