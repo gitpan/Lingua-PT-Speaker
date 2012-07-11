@@ -19,5 +19,5 @@ no_index:
     - inc
 requires:
   Lingua::PT::PLN: 0.05
-  Text::RewriteRules: 0.09
-version: 0.11
+  Text::RewriteRules: 0.25
+version: 0.12

@@ -51,10 +51,12 @@ $/="" if  $l;
 if(@ARGV && $ARGV[0] =~ /\.pho$/) { 
    if($wav){
       `##MBROLA## -t $t $pt1 $ARGV[0] $wav`; 
+      ## FIX ME -- use global player
       `play $wav`; 
    }
    else{
       `##MBROLA## -t $t $pt1 $ARGV[0] $tmp.wav`; 
+      ## FIX ME -- use global player
       `play $tmp.wav`; 
       unlink( "$tmp.wav") unless($q);
    }

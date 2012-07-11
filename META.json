@@ -33,10 +33,10 @@
       "runtime" : {
          "requires" : {
             "Lingua::PT::PLN" : "0.05",
-            "Text::RewriteRules" : "0.09"
+            "Text::RewriteRules" : "0.25"
          }
       }
    },
    "release_status" : "stable",
-   "version" : "0.11"
+   "version" : "0.12"
 }

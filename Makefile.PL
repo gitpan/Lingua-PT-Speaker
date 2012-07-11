@@ -71,6 +71,6 @@ WriteMakefile(
 	      NAME => "Lingua::PT::Speaker",
 	      EXE_FILES => [qq/pt-speak/],
 	      VERSION_FROM => 'lib/Lingua/PT/Speaker.pm',
-	      PREREQ_PM => { 'Text::RewriteRules' => 0.09,
+	      PREREQ_PM => { 'Text::RewriteRules' => 0.25,
 			     'Lingua::PT::PLN'    => 0.05 },
 	     );

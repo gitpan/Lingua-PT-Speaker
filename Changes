@@ -1,5 +1,8 @@
 Revision history for Perl extension Lingua::PT::Speaker.
 
+0.12  Wed Jul 11 14:16:17 WEST 2012
+        - require Text::RewriteRules version 0.25
+
 0.11  Wed Jun 27 17:13:13 WEST 2012
         - support alsa aplay
 
